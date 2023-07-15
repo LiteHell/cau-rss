@@ -1,8 +1,6 @@
 extends bulma.pug
 
 block head
-    script(src="/jquery-3.4.1.min.js")
-    script(src="/index.js")
     title LiteHell의 개인 RSS
 
 block body
@@ -11,26 +9,6 @@ block body
             .container
                 h1.title LiteHell의 개인 RSS
                 h2.subtitle 개인적으로 사용하기 위해 만든 RSS 서비스
-    section.section
-        .container
-            h1.title 웹툰 RSS
-            h2.subtitle 네이버, 다음 웹툰
-            .content
-                p 네이버 웹툰과 다음 웹툰이 지원됩니다. 다음 웹툰리그는 지원되지 않습니다
-            .card
-                .card-content
-                    .field
-                        label.label 웹툰 주소
-                        .control
-                            input.input.webtoon-url(type="text", placeholder="웹툰 주소")
-                    .field
-                        label.label RSS
-                        .control
-                            input.input.webtoon-rss(type="text", placeholder="RSS", readonly)
-                    .field
-                        label.label Atom
-                        .control
-                            input.input.webtoon-atom(type="text", placeholder="Atom", readonly)
     section.section
         .container
             h1.title 중앙대학교 관련 공지사항
