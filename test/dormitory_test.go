@@ -32,3 +32,12 @@ func TestDormitoryGlobalHouse(t *testing.T) {
 	}
 	testArticles(articles, t)
 }
+
+func TestDormitoryDavinci(t *testing.T) {
+	articles, err := cau_parser.ParseDormitory(cau_parser.DORMITORY_DAVINCI)
+
+	if err != nil {
+		t.Error(err)
+	}
+	testArticles(articles, t)
+}

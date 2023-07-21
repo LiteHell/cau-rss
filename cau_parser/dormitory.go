@@ -12,6 +12,7 @@ import (
 const DORMITORY_BLUEMIR = "m05_01_01"
 const DORMITORY_FUTURE_HOUSE = "m05_01_02"
 const DORMITORY_GLOBAL_HOUSE = "m05_01_03"
+const DORMITORY_DAVINCI = "m06_01"
 
 func parseDormitoryArticle(url string) (string, []CAUAttachment, error) {
 	// Fetch board
@@ -71,6 +72,9 @@ func parseDormitoryArticle(url string) (string, []CAUAttachment, error) {
 func ParseDormitory(boardId string) ([]CAUArticle, error) {
 	// Fetch board
 	boardUrl := "https://dormitory.cau.ac.kr/community.php?mid=" + boardId
+	if boardId == DORMITORY_DAVINCI {
+		boardUrl = "https://dorm.cau.ac.kr/community.php?mid=m06_01"
+	}
 	resp, err := http.Get(boardUrl)
 	if err != nil {
 		return nil, err
