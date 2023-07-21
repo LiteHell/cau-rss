@@ -37,5 +37,5 @@ SOFTWARE.
 ```
 
 ## License
-Copyright (c) 2019~2023 LiteHell, All rights reserved.
+Copyright (c) 2019~2023 Yeonjin Shin, All rights reserved.
 Distributed under MIT License
