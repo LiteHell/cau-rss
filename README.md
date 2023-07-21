@@ -9,7 +9,9 @@
 ## 서버 관련 환경변수
  - `PORT`: 서버포트
  - `GIN_MODE`: 프로덕션에서 돌리려면 `release`로 설정
-## [html5-valid-badge](https://github.com/bradleytaunt/html5-valid-badge) License
+
+## 이미지 리소스 라이선스
+### [html5-valid-badge](https://github.com/bradleytaunt/html5-valid-badge) License
 ```
 MIT License
 
