@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1.0, width=device-width">
+        <title>중앙대학교 RSS</title>
+        <style>
+            .container {
+                max-width: 700px;
+                margin: 0 auto;
+            }
+            table, tr, th, td {
+                border: 1px solid black;
+            }
+            footer {
+                border-top: 1px solid #313131;
+                color: #313131;
+                padding-top: 1em;
+                margin-top: 1em;
+            }
+            footer .banners img {
+                border:0;
+                width:88px;
+                height:31px
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>중앙대학교 RSS 서비스</h1>
+            <p>
+                개인적으로 쓰기 위해 만든 중앙대학교 RSS 서비스입니다. 각종 중앙대 사이트의 공지사항을 RSS, Atom, <a href="https://www.jsonfeed.org/">JSON Feed</a>로 구독할 수 있습니다.<br>
+                기존에 있던 웹툰 RSS 기능은 삭제했습니다. <a href="https://ncf.suod.kr/">웹툰 RSS를 원하시면 이거 쓰세요.</a>
+            </p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>사이트 명</th><th>피드 링크들</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>CAU Notice</td>
+                        <td><a href="/cau/notice">RSS</a> (참고: 이 링크는 <a href="https://www.cau.ac.kr/cms/FR_PRO_CON/BoardRss.do?pageNo=1&pagePerCnt=15&MENU_ID=100&SITE_NO=2&BOARD_SEQ=4&S_CATE_SEQ=&BOARD_TYPE=C0301&BOARD_CATEGORY_NO=&P_TAB_NO=&TAB_NO=&P_CATE_SEQ=&CATE_SEQ=&SEARCH_FLD=SUBJECT&SEARCH=">여기</a>로 리다이렉트하는 링크입니다.)</td>
+                    </tr>
+                    <tr>
+                        <td>소프트웨어학부</td><td><a href="/cau/cse/rss">RSS</a>&nbsp;<a href="/cau/cse/atom">ATOM</a>&nbsp;<a href="/cau/cse/json">JSON</a></td>
+                    </tr>
+                    <tr>
+                        <td>공학교육혁신센터</td><td><a href="/cau/abeek/rss">RSS</a>&nbsp;<a href="/cau/abeek/atom">ATOM</a>&nbsp;<a href="/cau/abeek/json">JSON</a></td>
+                    </tr>
+                    <tr>
+                        <td>다빈치SW교육원</td><td><a href="/cau/swedu/rss">RSS</a>&nbsp;<a href="/cau/swedu/atom">ATOM</a>&nbsp;<a href="/cau/swedu/json">JSON</a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <footer>
+                Copyright © 2019~2023 <a href="https://yeonjin.name">Yeonjin Shin</a><br>
+                Source code available on <a href="https://github.com/LiteHell/cau-rss">GitHub</a>; Written with <a href="https://go.dev/">Go</a>
+                <div class="banners">
+                    <p>
+                        <a href="https://jigsaw.w3.org/css-validator/validator?uri=https%3A%2F%2Frss.litehell.info%2F">
+                            <img src="https://jigsaw.w3.org/css-validator/images/vcss" alt="올바른 CSS입니다!" />
+                        </a>
+                        <a href="https://validator.w3.org/check?uri=https%3A%2F%2Frss.litehell.info%2F">
+                            <img src="/img/valid-html5.png" alt="올바른 HTML5입니다!">
+                        </a>
+                        <a href="https://www.anybrowser.org/campaign/">
+                            <img src="https://www.anybrowser.org/campaign/bvgraphics/abcbttn.gif" alt="어떤 웹 브라우저로도 볼 수 있습니다!" />
+                        </a>
+                    </p>
+                </div>
+            </footer>
+        </div>
+    </body>
+</html>
