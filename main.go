@@ -10,6 +10,24 @@ import (
 	"litehell.info/cau-rss/cau_parser"
 )
 
+func getAllSeoulDormitoryArticles() ([]cau_parser.CAUArticle, error) {
+	articles := []cau_parser.CAUArticle{}
+	var articlesErr error
+	for _, i := range []string{cau_parser.DORMITORY_BLUEMIR, cau_parser.DORMITORY_FUTURE_HOUSE, cau_parser.DORMITORY_GLOBAL_HOUSE} {
+		articlesNow, articlesErrNow := cau_parser.ParseDormitory(i)
+		if articlesErrNow != nil {
+			articlesErr = articlesErrNow
+		}
+		articles = append(articles, articlesNow...)
+	}
+
+	if articlesErr != nil {
+		return nil, articlesErr
+	} else {
+		return articles, nil
+	}
+}
+
 func main() {
 	server := gin.Default()
 	server.LoadHTMLGlob("html/*.html")
@@ -26,11 +44,14 @@ func main() {
 	})
 	server.GET("/cau/:siteType/:feedType", func(ctx *gin.Context) {
 		var feed *feeds.Feed
-		var articles []cau_parser.CAUArticle
+		var articles []cau_parser.CAUArticle = []cau_parser.CAUArticle{}
 		var articlesErr error
 		switch ctx.Param("siteType") {
 		case "sw":
 			ctx.Redirect(308, "/cau/swedu/"+ctx.Param("feedType"))
+			return
+		case "dormitory":
+			ctx.Redirect(308, "/cau/dormitory/seoul/all/"+ctx.Param("feedType"))
 			return
 		case "cse":
 			feed = &feeds.Feed{
@@ -67,35 +88,67 @@ func main() {
 			return
 		}
 
-		var feedStr string
-		var feedErr error
-		var contentType string
+		ctx.Set("feed", feed)
+		ctx.Set("articles", articles)
+	}, serveFeed)
+	server.GET("/cau/dormitory/davinci/:feedType", func(ctx *gin.Context) {
+		articles, articlesErr := cau_parser.ParseDormitory(cau_parser.DORMITORY_DAVINCI)
 
-		switch ctx.Param("feedType") {
-		case "rss":
-			feedStr, feedErr = generateFeed(feed, articles, RSS)
-			contentType = "application/rss+xml"
-		case "atom":
-			feedStr, feedErr = generateFeed(feed, articles, ATOM)
-			contentType = "application/atom+xml"
-		case "json":
-			feedStr, feedErr = generateFeed(feed, articles, JSON)
-			contentType = "application/feed+json"
+		if articlesErr != nil {
+			fmt.Fprint(os.Stderr, articlesErr)
+			ctx.HTML(500, "article-fetch-error.html", gin.H{})
+			return
+		}
+
+		feed := &feeds.Feed{
+			Title:       "중앙대학교 다빈치캠퍼스 기숙사 공지사항",
+			Link:        &feeds.Link{Href: "https://dorm.cau.ac.kr"},
+			Description: "중앙대학교 다빈치캠퍼스 기숙사의 공지사항입니다",
+			Created:     time.Now(),
+		}
+
+		ctx.Set("feed", feed)
+		ctx.Set("articles", articles)
+	}, serveFeed)
+	server.GET("/cau/dormitory/seoul/:buildingType/:feedType", func(ctx *gin.Context) {
+		var articles []cau_parser.CAUArticle
+		var articlesErr error
+		var buildingName string
+		switch ctx.Param("buildingType") {
+		case "bluemir":
+			buildingName = " 블루미르홀"
+			articles, articlesErr = cau_parser.ParseDormitory(cau_parser.DORMITORY_BLUEMIR)
+		case "future", "future_house", "futureHouse":
+			buildingName = " 퓨처하우스"
+			articles, articlesErr = cau_parser.ParseDormitory(cau_parser.DORMITORY_FUTURE_HOUSE)
+		case "global", "global_house", "globalHouse":
+			buildingName = " 글로벌하우스"
+			articles, articlesErr = cau_parser.ParseDormitory(cau_parser.DORMITORY_GLOBAL_HOUSE)
+		case "all":
+			buildingName = ""
+			articles, articlesErr = getAllSeoulDormitoryArticles()
 		default:
-			fmt.Fprintf(os.Stderr, "unsupported feed type: %s", ctx.Param("feedType"))
+			fmt.Fprintf(os.Stderr, "unsupported building: %s", ctx.Param("buildingType"))
 			ctx.HTML(404, "404.html", gin.H{})
 			return
 		}
 
-		if feedErr != nil {
-			fmt.Fprint(os.Stderr, feedErr)
-			ctx.HTML(500, "feed-gen-error.html", gin.H{})
+		if articlesErr != nil {
+			fmt.Fprint(os.Stderr, articlesErr)
+			ctx.HTML(500, "article-fetch-error.html", gin.H{})
 			return
 		}
 
-		ctx.Writer.Header().Set("Content-Type", contentType)
-		ctx.String(200, feedStr)
-	})
+		feed := &feeds.Feed{
+			Title:       "중앙대학교 서울캠퍼스 기숙사" + buildingName + " 공지사항",
+			Link:        &feeds.Link{Href: "https://dormitory.cau.ac.kr"},
+			Description: "중앙대학교 서울캠퍼스 기숙사" + buildingName + "의 공지사항입니다",
+			Created:     time.Now(),
+		}
+
+		ctx.Set("feed", feed)
+		ctx.Set("articles", articles)
+	}, serveFeed)
 	server.Static("/img", "static/img")
 	server.StaticFile("/robots.txt", "static/robots.txt")
 
