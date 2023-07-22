@@ -46,7 +46,7 @@ func serveFeed(ctx *gin.Context) {
 		return
 	}
 
-	saveCache(feedStr, contentType, ctx)
+	saveFeedCache(feedStr, contentType, ctx)
 
 	ctx.Writer.Header().Set("Content-Type", contentType)
 	ctx.String(200, feedStr)

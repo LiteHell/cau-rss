@@ -13,7 +13,7 @@ import (
 var redisClient *redis.Client = nil
 var redisCtx context.Context
 
-const redis_cache_key_id = "redis_cache_key"
+const redis_feed_cache_key_id = "redis_cache_key"
 
 func InitializeRedis() {
 	if os.Getenv("REDIS_ENABLED") != "true" {
@@ -32,8 +32,8 @@ func InitializeRedis() {
 	})
 }
 
-func getRedisCacheKey(ctx *gin.Context) (string, string, bool) {
-	cacheKey_tmp, hasCacheKey := ctx.Get(redis_cache_key_id)
+func getRedisFeedCacheKey(ctx *gin.Context) (string, string, bool) {
+	cacheKey_tmp, hasCacheKey := ctx.Get(redis_feed_cache_key_id)
 	if !hasCacheKey {
 		return "", "", false
 	}
@@ -44,16 +44,16 @@ func getRedisCacheKey(ctx *gin.Context) (string, string, bool) {
 	return cacheKey, cacheMimeKey, true
 }
 
-func setRedisCacheKey(ctx *gin.Context, key string) {
-	ctx.Set(redis_cache_key_id, key)
+func setRedisFeedCacheKey(ctx *gin.Context, key string) {
+	ctx.Set(redis_feed_cache_key_id, key)
 }
 
-func saveCache(feed string, mime string, ctx *gin.Context) {
+func saveFeedCache(feed string, mime string, ctx *gin.Context) {
 	if redisClient == nil {
 		return
 	}
 
-	cacheKey, cacheMimeKey, hasCacheKey := getRedisCacheKey(ctx)
+	cacheKey, cacheMimeKey, hasCacheKey := getRedisFeedCacheKey(ctx)
 	if !hasCacheKey {
 		return
 	}
@@ -62,12 +62,12 @@ func saveCache(feed string, mime string, ctx *gin.Context) {
 	redisClient.Set(redisCtx, cacheMimeKey, mime, time.Minute*5)
 }
 
-func serveCache(ctx *gin.Context) {
+func serveCachedFeed(ctx *gin.Context) {
 	if redisClient == nil {
 		return
 	}
 
-	cacheKey, cacheMimeKey, hasCacheKey := getRedisCacheKey(ctx)
+	cacheKey, cacheMimeKey, hasCacheKey := getRedisFeedCacheKey(ctx)
 	if !hasCacheKey {
 		return
 	}

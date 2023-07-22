@@ -43,8 +43,8 @@ func CreateServer() *gin.Engine {
 		ctx.Redirect(308, "https://www.cau.ac.kr/cms/FR_PRO_CON/BoardRss.do?pageNo=1&pagePerCnt=15&MENU_ID=100&SITE_NO=2&BOARD_SEQ=4&S_CATE_SEQ=&BOARD_TYPE=C0301&BOARD_CATEGORY_NO=&P_TAB_NO=&TAB_NO=&P_CATE_SEQ=&CATE_SEQ=&SEARCH_FLD=SUBJECT&SEARCH=")
 	})
 	server.GET("/cau/:siteType/:feedType", func(ctx *gin.Context) {
-		setRedisCacheKey(ctx, ctx.Request.URL.Path)
-	}, serveCache, func(ctx *gin.Context) {
+		setRedisFeedCacheKey(ctx, ctx.Request.URL.Path)
+	}, serveCachedFeed, func(ctx *gin.Context) {
 		var feed *feeds.Feed
 		var articles []cau_parser.CAUArticle = []cau_parser.CAUArticle{}
 		var articlesErr error
@@ -94,8 +94,8 @@ func CreateServer() *gin.Engine {
 		ctx.Set("articles", articles)
 	}, serveFeed)
 	server.GET("/cau/dormitory/davinci/:feedType", func(ctx *gin.Context) {
-		setRedisCacheKey(ctx, ctx.Request.URL.Path)
-	}, serveCache, func(ctx *gin.Context) {
+		setRedisFeedCacheKey(ctx, ctx.Request.URL.Path)
+	}, serveCachedFeed, func(ctx *gin.Context) {
 		articles, articlesErr := cau_parser.ParseDormitory(cau_parser.DORMITORY_DAVINCI)
 
 		if articlesErr != nil {
@@ -115,8 +115,8 @@ func CreateServer() *gin.Engine {
 		ctx.Set("articles", articles)
 	}, serveFeed)
 	server.GET("/cau/dormitory/seoul/:buildingType/:feedType", func(ctx *gin.Context) {
-		setRedisCacheKey(ctx, ctx.Request.URL.Path)
-	}, serveCache, func(ctx *gin.Context) {
+		setRedisFeedCacheKey(ctx, ctx.Request.URL.Path)
+	}, serveCachedFeed, func(ctx *gin.Context) {
 		var articles []cau_parser.CAUArticle
 		var articlesErr error
 		var buildingName string
