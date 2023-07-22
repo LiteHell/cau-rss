@@ -9,7 +9,7 @@ import (
 )
 
 func getAIArticle(url string) (string, []CAUAttachment, error) {
-	// Fetch HTTP response from cse board
+	// Fetch HTTP response from ai board
 	resp, err := http.Get(url)
 	if err != nil {
 		return "", nil, err
@@ -41,7 +41,7 @@ func getAIArticle(url string) (string, []CAUAttachment, error) {
 }
 
 func ParseAI() ([]CAUArticle, error) {
-	// Fetch cse board
+	// Fetch ai board
 	boardUrl := "https://ai.cau.ac.kr/sub07/sub0701.php?category=1&view=list"
 	resp, err := http.Get(boardUrl)
 	if err != nil {

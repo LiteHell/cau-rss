@@ -7,7 +7,7 @@ import (
 )
 
 var keysToCrawl = []string{
-	"cse", "swedu", "abeek", "dormitory/davinci", "dormitory/seoul/bluemir", "dormitory/seoul/future_house", "dormitory/seoul/global_house",
+	"cse", "ai", "swedu", "abeek", "dormitory/davinci", "dormitory/seoul/bluemir", "dormitory/seoul/future_house", "dormitory/seoul/global_house",
 }
 
 func StartCrawller() {

@@ -58,7 +58,7 @@ func TestFeeds(t *testing.T) {
 	runServer()
 
 	for _, feedType := range []string{"rss", "atom", "json"} {
-		for _, sitename := range []string{"cse", "swedu", "abeek"} {
+		for _, sitename := range []string{"cse", "ai", "swedu", "abeek"} {
 			url := "http://127.0.0.1:8080/cau/" + sitename + "/" + feedType
 
 			t.Logf("Testing feed: %s", url)

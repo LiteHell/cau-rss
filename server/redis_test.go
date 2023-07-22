@@ -40,7 +40,7 @@ func TestRedis(t *testing.T) {
 	server.InitializeRedis()
 	server.ClearCache()
 
-	for _, sitename := range []string{"cse", "swedu", "abeek"} {
+	for _, sitename := range []string{"cse", "ai", "swedu", "abeek"} {
 		testRedisFor("/cau/"+sitename, t)
 	}
 

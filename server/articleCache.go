@@ -25,6 +25,8 @@ func fetchArticlesForKey(key string) ([]cau_parser.CAUArticle, error) {
 		return cau_parser.ParseDormitory(cau_parser.DORMITORY_FUTURE_HOUSE)
 	case "dormitory/seoul/global_house":
 		return cau_parser.ParseDormitory(cau_parser.DORMITORY_GLOBAL_HOUSE)
+	case "ai":
+		return cau_parser.ParseAI()
 	default:
 		panic(fmt.Errorf("Unknown articles key: %s", key))
 	}

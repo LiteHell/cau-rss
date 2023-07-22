@@ -36,7 +36,7 @@ func TestCrawller(t *testing.T) {
 	runServer()
 
 	time.Sleep(5)
-	for _, sitename := range []string{"cse", "swedu", "abeek"} {
+	for _, sitename := range []string{"cse", "ai", "swedu", "abeek"} {
 		testCrawllerFor("/cau/"+sitename, t)
 	}
 

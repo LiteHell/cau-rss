@@ -77,6 +77,13 @@ func CreateServer() *gin.Engine {
 				Description: "중앙대학교 공학교육혁신센터의 공지사항입니다",
 				Created:     time.Now(),
 			}
+		case "ai":
+			feed = &feeds.Feed{
+				Title:       "중앙대학교 AI학과 공지사항",
+				Link:        &feeds.Link{Href: "https://ai.cau.ac.kr"},
+				Description: "중앙대학교 AI학과의 공지사항입니다",
+				Created:     time.Now(),
+			}
 		default:
 			fmt.Fprintf(os.Stderr, "unsupported website: %s", ctx.Param("siteType"))
 			ctx.HTML(404, "404.html", gin.H{})
