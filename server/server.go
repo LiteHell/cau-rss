@@ -140,7 +140,7 @@ func CreateServer() *gin.Engine {
 		if buildingType == "all" {
 			articles, articlesErr = getAllSeoulDormitoryArticles()
 		} else {
-			articles, articlesErr = cau_parser.ParseDormitory("dormitory/seoul/" + buildingType)
+			articles, articlesErr = getArticlesWithCache("dormitory/seoul/" + buildingType)
 		}
 
 		if articlesErr != nil {
