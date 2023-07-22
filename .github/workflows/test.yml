@@ -1,0 +1,31 @@
+name: Build and test
+
+on:
+  schedule:
+    - cron: '0 19 * * *'
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 'stable'
+
+      - name: Set up Redis
+        uses: shogo82148/actions-setup-redis@v1
+        with:
+          redis-version: latest
+
+      - name: Build
+        run: go build -v ./...
+
+      - name: Test
+        run: go test -v ./...
+        env:
+          REDIS_ENABLED: 'true'
+          REDIS_ADDR: 127.0.0.1:6379
