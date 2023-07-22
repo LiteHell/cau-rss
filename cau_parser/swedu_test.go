@@ -1,4 +1,4 @@
-package test
+package cau_parser_test
 
 import (
 	"testing"
@@ -6,8 +6,8 @@ import (
 	"litehell.info/cau-rss/cau_parser"
 )
 
-func TestABEEK(t *testing.T) {
-	articles, err := cau_parser.ParseABEEK()
+func TestSWEDU(t *testing.T) {
+	articles, err := cau_parser.ParseSWEDU()
 
 	if err != nil {
 		t.Error(err)

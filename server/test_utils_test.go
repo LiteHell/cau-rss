@@ -1,4 +1,4 @@
-package test
+package server_test
 
 import (
 	"os"
@@ -22,8 +22,8 @@ func runServer() {
 		panic(err)
 	}
 
-	if strings.HasSuffix(wd, "/test") {
-		os.Chdir(wd[:len(wd)-5])
+	if strings.HasSuffix(wd, "/server") {
+		os.Chdir(wd[:len(wd)-7])
 	}
 	server := server.CreateServer()
 

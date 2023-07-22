@@ -1,4 +1,4 @@
-package test
+package cau_parser_test
 
 import (
 	"strings"
