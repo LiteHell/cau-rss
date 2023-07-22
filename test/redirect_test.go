@@ -45,7 +45,7 @@ func isRedirected(from string, to string) (bool, string, error) {
 }
 
 func testRedirect(from, to string, t *testing.T) {
-	redirected, location, err := isRedirected("/index.html", "/")
+	redirected, location, err := isRedirected(from, to)
 
 	if err != nil {
 		t.Error(err)
