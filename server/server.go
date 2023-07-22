@@ -13,8 +13,8 @@ import (
 func getAllSeoulDormitoryArticles() ([]cau_parser.CAUArticle, error) {
 	articles := []cau_parser.CAUArticle{}
 	var articlesErr error
-	for _, i := range []string{cau_parser.DORMITORY_BLUEMIR, cau_parser.DORMITORY_FUTURE_HOUSE, cau_parser.DORMITORY_GLOBAL_HOUSE} {
-		articlesNow, articlesErrNow := cau_parser.ParseDormitory(i)
+	for _, i := range []string{"bluemir", "future_house", "global_house"} {
+		articlesNow, articlesErrNow := getArticlesWithCache("dormitory/seoul/" + i)
 		if articlesErrNow != nil {
 			articlesErr = articlesErrNow
 		}
@@ -48,7 +48,8 @@ func CreateServer() *gin.Engine {
 		var feed *feeds.Feed
 		var articles []cau_parser.CAUArticle = []cau_parser.CAUArticle{}
 		var articlesErr error
-		switch ctx.Param("siteType") {
+		siteType := ctx.Param("siteType")
+		switch siteType {
 		case "sw":
 			ctx.Redirect(308, "/cau/swedu/"+ctx.Param("feedType"))
 			return
@@ -62,7 +63,6 @@ func CreateServer() *gin.Engine {
 				Description: "중앙대학교 소프트웨어학부의 공지사항입니다",
 				Created:     time.Now(),
 			}
-			articles, articlesErr = cau_parser.ParseCSE()
 		case "swedu":
 			feed = &feeds.Feed{
 				Title:       "중앙대학교 다빈치SW교욱원 공지사항",
@@ -70,7 +70,6 @@ func CreateServer() *gin.Engine {
 				Description: "중앙대학교 다빈치SW교욱원의 공지사항입니다",
 				Created:     time.Now(),
 			}
-			articles, articlesErr = cau_parser.ParseSWEDU()
 		case "abeek":
 			feed = &feeds.Feed{
 				Title:       "중앙대학교 공학교육혁신센터 공지사항",
@@ -78,12 +77,13 @@ func CreateServer() *gin.Engine {
 				Description: "중앙대학교 공학교육혁신센터의 공지사항입니다",
 				Created:     time.Now(),
 			}
-			articles, articlesErr = cau_parser.ParseABEEK()
 		default:
 			fmt.Fprintf(os.Stderr, "unsupported website: %s", ctx.Param("siteType"))
 			ctx.HTML(404, "404.html", gin.H{})
 			return
 		}
+
+		articles, articlesErr = getArticlesWithCache(siteType)
 		if articlesErr != nil {
 			fmt.Fprint(os.Stderr, articlesErr)
 			ctx.HTML(500, "article-fetch-error.html", gin.H{})
@@ -96,7 +96,7 @@ func CreateServer() *gin.Engine {
 	server.GET("/cau/dormitory/davinci/:feedType", func(ctx *gin.Context) {
 		setRedisFeedCacheKey(ctx, ctx.Request.URL.Path)
 	}, serveCachedFeed, func(ctx *gin.Context) {
-		articles, articlesErr := cau_parser.ParseDormitory(cau_parser.DORMITORY_DAVINCI)
+		articles, articlesErr := getArticlesWithCache("dormitory/davinci")
 
 		if articlesErr != nil {
 			fmt.Fprint(os.Stderr, articlesErr)
@@ -117,26 +117,30 @@ func CreateServer() *gin.Engine {
 	server.GET("/cau/dormitory/seoul/:buildingType/:feedType", func(ctx *gin.Context) {
 		setRedisFeedCacheKey(ctx, ctx.Request.URL.Path)
 	}, serveCachedFeed, func(ctx *gin.Context) {
+		buildingType := ctx.Param("buildingType")
+
 		var articles []cau_parser.CAUArticle
 		var articlesErr error
 		var buildingName string
-		switch ctx.Param("buildingType") {
+		switch buildingType {
 		case "bluemir":
 			buildingName = " 블루미르홀"
-			articles, articlesErr = cau_parser.ParseDormitory(cau_parser.DORMITORY_BLUEMIR)
-		case "future", "future_house", "futureHouse":
+		case "future_house":
 			buildingName = " 퓨처하우스"
-			articles, articlesErr = cau_parser.ParseDormitory(cau_parser.DORMITORY_FUTURE_HOUSE)
-		case "global", "global_house", "globalHouse":
+		case "global_house":
 			buildingName = " 글로벌하우스"
-			articles, articlesErr = cau_parser.ParseDormitory(cau_parser.DORMITORY_GLOBAL_HOUSE)
 		case "all":
 			buildingName = ""
-			articles, articlesErr = getAllSeoulDormitoryArticles()
 		default:
 			fmt.Fprintf(os.Stderr, "unsupported building: %s", ctx.Param("buildingType"))
 			ctx.HTML(404, "404.html", gin.H{})
 			return
+		}
+
+		if buildingType == "all" {
+			articles, articlesErr = getAllSeoulDormitoryArticles()
+		} else {
+			articles, articlesErr = cau_parser.ParseDormitory("dormitory/seoul/" + buildingType)
 		}
 
 		if articlesErr != nil {

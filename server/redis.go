@@ -15,6 +15,10 @@ var redisCtx context.Context
 
 const redis_feed_cache_key_id = "redis_cache_key"
 
+func isRedisAvailable() bool {
+	return redisClient != nil
+}
+
 func InitializeRedis() {
 	if os.Getenv("REDIS_ENABLED") != "true" {
 		return
