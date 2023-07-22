@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"context"
@@ -15,7 +15,7 @@ var redisCtx context.Context
 
 const redis_cache_key_id = "redis_cache_key"
 
-func initializeRedis() {
+func InitializeRedis() {
 	if os.Getenv("REDIS_ENABLED") != "true" {
 		return
 	}
