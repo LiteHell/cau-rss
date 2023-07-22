@@ -3,7 +3,7 @@
 
 ## 빌드 / 테스트 방법
  - 빌드 : `go build`
- - 테스트 : `cd test && go test`
+ - 테스트 : `go test ./...` (참고: redis 기능 테스트하려면 redis 관련 환경변수 전달해줘야 함.)
 
 ## Redis 관련 환경변수
  - `REDIS_ENABLED`: redis를 이용하려면 `true`로 설정
