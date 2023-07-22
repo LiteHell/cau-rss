@@ -14,6 +14,14 @@ const ATOM = 1
 const JSON = 2
 
 func generateFeed(feed *feeds.Feed, articles []cau_parser.CAUArticle, feedType feedType) (string, error) {
+	feed.Image = &feeds.Image{
+		Url:    "https://rss.litehell.info/img/puang.png",
+		Title:  "RSS 마크를 껴안은 푸앙이",
+		Link:   "https://rss.litehell.info",
+		Width:  400,
+		Height: 400,
+	}
+
 	for _, article := range articles {
 		feed.Add(&feeds.Item{
 			Title:       article.Title,
