@@ -161,6 +161,7 @@ func CreateServer() *gin.Engine {
 	}, serveFeed)
 	server.Static("/img", "static/img")
 	server.StaticFile("/robots.txt", "static/robots.txt")
+	server.StaticFile("/favicon.ico", "static/favicon.ico")
 
 	return server
 }
