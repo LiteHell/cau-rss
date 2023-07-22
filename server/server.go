@@ -36,7 +36,9 @@ func CreateServer() *gin.Engine {
 		ctx.Redirect(308, "/")
 	})
 	server.GET("/", func(ctx *gin.Context) {
-		ctx.HTML(200, "index.html", gin.H{})
+		ctx.HTML(200, "index.html", gin.H{
+			"sites": GetSupportedSites(),
+		})
 	})
 
 	server.GET("/cau/notice", func(ctx *gin.Context) {

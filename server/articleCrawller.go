@@ -6,10 +6,6 @@ import (
 	"time"
 )
 
-var keysToCrawl = []string{
-	"cse", "ai", "swedu", "abeek", "dormitory/davinci", "dormitory/seoul/bluemir", "dormitory/seoul/future_house", "dormitory/seoul/global_house",
-}
-
 func StartCrawller() {
 	if isRedisAvailable() {
 		var crawlChannel chan string = make(chan string)
@@ -43,9 +39,12 @@ func fetchWorker(ch <-chan string) {
 
 func commandSender(ch chan<- string) {
 	for {
-		for _, i := range keysToCrawl {
-			ch <- i
-		}
+		LoopForAllSites(func(cw *CauWebsite) {
+			if cw.Key == "dormitory/seoul/all" {
+				return
+			}
+			ch <- cw.Key
+		})
 		time.Sleep(time.Minute * 3)
 	}
 }

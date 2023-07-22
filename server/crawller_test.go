@@ -36,12 +36,7 @@ func TestCrawller(t *testing.T) {
 	runServer()
 
 	time.Sleep(5)
-	for _, sitename := range []string{"cse", "ai", "swedu", "abeek"} {
-		testCrawllerFor("/cau/"+sitename, t)
-	}
-
-	for _, buildingType := range []string{"bluemir", "future_house", "global_house", "all"} {
-		testCrawllerFor("/cau/dormitory/seoul/"+buildingType, t)
-	}
-	testCrawllerFor("/cau/dormitory/davinci", t)
+	server.LoopForAllSites(func(cw *server.CauWebsite) {
+		testCrawllerFor("/cau/"+cw.Key, t)
+	})
 }

@@ -40,12 +40,7 @@ func TestRedis(t *testing.T) {
 	server.InitializeRedis()
 	server.ClearCache()
 
-	for _, sitename := range []string{"cse", "ai", "swedu", "abeek"} {
-		testRedisFor("/cau/"+sitename, t)
-	}
-
-	for _, buildingType := range []string{"bluemir", "future_house", "global_house", "all"} {
-		testRedisFor("/cau/dormitory/seoul/"+buildingType, t)
-	}
-	testRedisFor("/cau/dormitory/davinci", t)
+	server.LoopForAllSites(func(cw *server.CauWebsite) {
+		testRedisFor("/cau/"+cw.Key, t)
+	})
 }
