@@ -20,7 +20,7 @@ func isRedisAvailable() bool {
 }
 
 func InitializeRedis() {
-	if os.Getenv("REDIS_ENABLED") != "true" {
+	if os.Getenv("REDIS_ENABLED") != "true" || redisClient != nil {
 		return
 	}
 
@@ -34,6 +34,10 @@ func InitializeRedis() {
 		Password: os.Getenv("REDIS_PASSWORD"), // no password set
 		DB:       db,                          // use default DB
 	})
+}
+
+func ClearCache() error {
+	return redisClient.FlushAll(redisCtx).Err()
 }
 
 func getRedisFeedCacheKey(ctx *gin.Context) (string, string, bool) {

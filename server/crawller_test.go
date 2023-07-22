@@ -8,14 +8,8 @@ import (
 	"litehell.info/cau-rss/server"
 )
 
-func testRedisFor(url string, t *testing.T) {
+func testCrawllerFor(url string, t *testing.T) {
 	baseUrl := "http://127.0.0.1:8080" + url
-
-	t.Logf("Fetching rss first for feed: %s", url)
-	err := testFeed(baseUrl+"/rss", "rss")
-	if err != nil {
-		t.Error(err)
-	}
 
 	for _, i := range []string{"rss", "atom", "json"} {
 		t.Logf("Testing redis feed: %s", url)
@@ -30,22 +24,24 @@ func testRedisFor(url string, t *testing.T) {
 	}
 }
 
-func TestRedis(t *testing.T) {
+func TestCrawller(t *testing.T) {
 	if os.Getenv("REDIS_ADDR") == "" {
 		t.Logf("Redis test skipped")
 		return
 	}
 
-	runServer()
 	server.InitializeRedis()
 	server.ClearCache()
+	server.StartCrawller()
+	runServer()
 
+	time.Sleep(5)
 	for _, sitename := range []string{"cse", "swedu", "abeek"} {
-		testRedisFor("/cau/"+sitename, t)
+		testCrawllerFor("/cau/"+sitename, t)
 	}
 
 	for _, buildingType := range []string{"bluemir", "future_house", "global_house", "all"} {
-		testRedisFor("/cau/dormitory/seoul/"+buildingType, t)
+		testCrawllerFor("/cau/dormitory/seoul/"+buildingType, t)
 	}
-	testRedisFor("/cau/dormitory/davinci", t)
+	testCrawllerFor("/cau/dormitory/davinci", t)
 }

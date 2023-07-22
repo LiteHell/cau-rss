@@ -6,6 +6,7 @@ import (
 
 func main() {
 	server.InitializeRedis()
+	server.StartCrawller()
 
 	server := server.CreateServer()
 	server.Run()
