@@ -5,16 +5,12 @@ COPY go.mod go.sum ./
 RUN go mod download && go mod verify
 
 COPY cau_parser ./cau_parser
-
-WORKDIR /app/cau_parser
-RUN go build
-WORKDIR /app
+COPY server ./server
 
 COPY *.go ./
 RUN go build -v -o ./app ./
 
-COPY static ./
-COPY html ./
+COPY static ./static
+COPY html ./html
 
-COPY . ./
 CMD ["/app/app"]
