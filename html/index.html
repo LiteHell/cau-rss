@@ -56,47 +56,24 @@
                         <td colspan="2">CAU Notice</td>
                         <td><a href="/cau/notice">RSS</a> (참고: 이 링크는 <a href="https://www.cau.ac.kr/cms/FR_PRO_CON/BoardRss.do?pageNo=1&pagePerCnt=15&MENU_ID=100&SITE_NO=2&BOARD_SEQ=4&S_CATE_SEQ=&BOARD_TYPE=C0301&BOARD_CATEGORY_NO=&P_TAB_NO=&TAB_NO=&P_CATE_SEQ=&CATE_SEQ=&SEARCH_FLD=SUBJECT&SEARCH=">여기</a>로 리다이렉트하는 링크입니다.)</td>
                     </tr>
+                    {{ range .table }}
                     <tr>
-                        <td colspan="2">소프트웨어학부</td><td><a href="/cau/cse/rss">RSS</a>&nbsp;<a href="/cau/cse/atom">ATOM</a>&nbsp;<a href="/cau/cse/json">JSON</a></td>
+                        {{ range .Cells }}
+                            <td
+                                {{ if ne .Colspan 0 }}colspan="{{ .Colspan }}"{{ end }}
+                                {{ if ne .Rowspan 0 }}rowspan="{{ .Rowspan }}"{{ end }}
+                            >
+                                {{ if .IsFeedLinks }}
+                                    <a href="/cau/{{ .FeedKey }}/rss">RSS</a>&nbsp;
+                                    <a href="/cau/{{ .FeedKey }}/atom">ATOM</a>&nbsp;
+                                    <a href="/cau/{{ .FeedKey }}/json">JSON</a>&nbsp;
+                                {{ else }}
+                                    {{ .Text }}
+                                {{ end }}
+                            </td>
+                        {{ end }}
                     </tr>
-                    <tr>
-                        <td colspan="2">AI학과</td><td><a href="/cau/ai/rss">RSS</a>&nbsp;<a href="/cau/ai/atom">ATOM</a>&nbsp;<a href="/cau/ai/json">JSON</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">공학교육혁신센터</td><td><a href="/cau/abeek/rss">RSS</a>&nbsp;<a href="/cau/abeek/atom">ATOM</a>&nbsp;<a href="/cau/abeek/json">JSON</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">다빈치SW교육원</td><td><a href="/cau/swedu/rss">RSS</a>&nbsp;<a href="/cau/swedu/atom">ATOM</a>&nbsp;<a href="/cau/swedu/json">JSON</a></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">다빈치캠퍼스 기숙사</td><td><a href="/cau/dormitory/davinci/rss">RSS</a>&nbsp;<a href="/cau/dormitory/davinci/atom">ATOM</a>&nbsp;<a href="/cau/dormitory/davinci/json">JSON</a></td>
-                    </tr>
-                    <tr>
-                        <td rowspan="3">서울캠퍼스 기숙사</td>
-                        <td>블루미르홀</td>
-                        <td><a href="/cau/dormitory/seoul/bluemir/rss">RSS</a>&nbsp;<a href="/cau/dormitory/seoul/bluemir/atom">ATOM</a>&nbsp;<a href="/cau/dormitory/seoul/bluemir/json">JSON</a></td>
-                    </tr>
-                    <tr>
-                        <td>퓨처하우스</td>
-                        <td><a href="/cau/dormitory/seoul/future_house/rss">RSS</a>&nbsp;<a href="/cau/dormitory/seoul/future_house/atom">ATOM</a>&nbsp;<a href="/cau/dormitory/seoul/future_house/json">JSON</a></td>
-                    </tr>
-                    <tr>
-                        <td>글로벌하우스</td>
-                        <td><a href="/cau/dormitory/seoul/global_house/rss">RSS</a>&nbsp;<a href="/cau/dormitory/seoul/global_house/atom">ATOM</a>&nbsp;<a href="/cau/dormitory/seoul/global_house/json">JSON</a></td>
-                    </tr>
-                    <tr>
-                        <td rowspan="3">창의ICT공과대학</td>
-                        <td>창의ICT공과대학</td>
-                        <td><a href="/cau/ict/rss">RSS</a>&nbsp;<a href="/cau/ict/atom">ATOM</a>&nbsp;<a href="/cau/ict/json">JSON</a></td>
-                    </tr>
-                    <tr>
-                        <td>전기전자공학부</td>
-                        <td><a href="/cau/e3home/rss">RSS</a>&nbsp;<a href="/cau/e3home/atom">ATOM</a>&nbsp;<a href="/cau/e3home/json">JSON</a></td>
-                    </tr>
-                    <tr>
-                        <td>융합공학부</td>
-                        <td><a href="/cau/ie/rss">RSS</a>&nbsp;<a href="/cau/ie/atom">ATOM</a>&nbsp;<a href="/cau/ie/json">JSON</a></td>
-                    </tr>
+                    {{ end }}
                 </tbody>
             </table>
             </table>
