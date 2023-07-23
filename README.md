@@ -42,6 +42,7 @@ SOFTWARE.
 
 ## License
 cau-rss --- RSS Service for Notices of Chuang-Ang University
+
 Copyright (C) 2019~2023 Yeonjin Shin
 
 This program is free software: you can redistribute it and/or modify
