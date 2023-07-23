@@ -60,13 +60,19 @@ func TestFeeds(t *testing.T) {
 
 	for _, feedType := range []string{"rss", "atom", "json"} {
 		server.LoopForAllSites(func(cw *server.CauWebsite) {
-			url := "http://127.0.0.1:8080/cau/" + cw.Key + "/" + feedType
+			endpoint := cw.Key + "/" + feedType
+			feedType := feedType
+			t.Run(endpoint, func(t *testing.T) {
+				url := "http://127.0.0.1:8080/cau/" + endpoint
 
-			t.Logf("Testing feed: %s", url)
-			err := testFeed(url, feedType)
-			if err != nil {
-				t.Error(err)
-			}
+				t.Logf("Testing feed: %s", url)
+
+				t.Parallel()
+				err := testFeed(url, feedType)
+				if err != nil {
+					t.Error(err)
+				}
+			})
 		})
 	}
 }
