@@ -41,6 +41,10 @@ func TestRedis(t *testing.T) {
 	server.ClearCache()
 
 	server.LoopForAllSites(func(cw *server.CauWebsite) {
-		testRedisFor("/cau/"+cw.Key, t)
+		key := cw.Key
+		t.Run(key, func(t *testing.T) {
+			t.Parallel()
+			testRedisFor("/cau/"+key, t)
+		})
 	})
 }
