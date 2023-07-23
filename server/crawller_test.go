@@ -25,8 +25,8 @@ func testCrawllerFor(url string, t *testing.T) {
 }
 
 func TestCrawller(t *testing.T) {
-	if os.Getenv("REDIS_ADDR") == "" {
-		t.Logf("Redis test skipped")
+	if os.Getenv("REDIS_ENABLED") != "true" {
+		t.Skip("Redis not available, skipping...")
 		return
 	}
 
