@@ -3,7 +3,6 @@ package server
 import (
 	"fmt"
 	"os"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/feeds"
@@ -42,7 +41,6 @@ func CreateServer() *gin.Engine {
 				Title:       fmt.Sprintf("%s 공지사항", feedName),
 				Link:        &feeds.Link{Href: cw.Url},
 				Description: fmt.Sprintf("%s의 공지사항입니다", feedName),
-				Updated:     time.Now(),
 			}
 
 			articles, articlesErr := getArticlesWithCache(cw.Key)

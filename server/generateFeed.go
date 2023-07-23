@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/gorilla/feeds"
 	"litehell.info/cau-rss/cau_parser"
@@ -22,6 +23,8 @@ func generateFeed(feed *feeds.Feed, articles []cau_parser.CAUArticle, feedType f
 		Height: 400,
 	}
 
+	updated := time.Unix(0, 0)
+
 	for _, article := range articles {
 		feed.Add(&feeds.Item{
 			Title:       article.Title,
@@ -30,8 +33,14 @@ func generateFeed(feed *feeds.Feed, articles []cau_parser.CAUArticle, feedType f
 			Created:     article.Date,
 			Content:     article.Content,
 			Description: article.Content,
+			Id:          article.Url,
 		})
+		if updated.Before(article.Date) {
+			updated = article.Date
+		}
 	}
+
+	feed.Updated = updated
 
 	var result string
 	var err error
