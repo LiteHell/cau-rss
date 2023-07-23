@@ -2,7 +2,6 @@ package cau_parser
 
 import (
 	"fmt"
-	"net/http"
 	"strings"
 	"time"
 
@@ -16,13 +15,7 @@ const DORMITORY_DAVINCI = "m06_01"
 
 func parseDormitoryArticle(url string) (string, []CAUAttachment, error) {
 	// Fetch board
-	resp, err := http.Get(url)
-	if err != nil {
-		return "", nil, err
-	}
-
-	// Parse html
-	html, err := goquery.NewDocumentFromResponse(resp)
+	html, err := getHtmlFromUrl(url)
 	if err != nil {
 		return "", nil, err
 	}
@@ -75,13 +68,7 @@ func ParseDormitory(boardId string) ([]CAUArticle, error) {
 	if boardId == DORMITORY_DAVINCI {
 		boardUrl = "https://dorm.cau.ac.kr/community.php?mid=m06_01"
 	}
-	resp, err := http.Get(boardUrl)
-	if err != nil {
-		return nil, err
-	}
-
-	// Parse html
-	html, err := goquery.NewDocumentFromResponse(resp)
+	html, err := getHtmlFromUrl(boardUrl)
 	if err != nil {
 		return nil, err
 	}

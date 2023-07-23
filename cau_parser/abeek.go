@@ -2,7 +2,6 @@ package cau_parser
 
 import (
 	"fmt"
-	"net/http"
 	"strings"
 	"time"
 
@@ -10,14 +9,7 @@ import (
 )
 
 func parseABEEKArticle(url string) (string, string, []CAUAttachment, error) {
-	// Fetch article
-	resp, err := http.Get(url)
-	if err != nil {
-		return "", "", nil, err
-	}
-
-	// Parse html
-	html, err := goquery.NewDocumentFromResponse(resp)
+	html, err := getHtmlFromUrl(url)
 	if err != nil {
 		return "", "", nil, err
 	}
@@ -77,13 +69,7 @@ func parseABEEKArticle(url string) (string, string, []CAUAttachment, error) {
 func ParseABEEK() ([]CAUArticle, error) {
 	// Fetch board
 	boardUrl := "https://abeek.cau.ac.kr/notice/list.jsp?sc_board_seq=1&page=1"
-	resp, err := http.Get(boardUrl)
-	if err != nil {
-		return nil, err
-	}
-
-	// Parse html
-	html, err := goquery.NewDocumentFromResponse(resp)
+	html, err := getHtmlFromUrl(boardUrl)
 	if err != nil {
 		return nil, err
 	}

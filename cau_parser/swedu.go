@@ -1,7 +1,6 @@
 package cau_parser
 
 import (
-	"net/http"
 	"strings"
 	"time"
 
@@ -10,13 +9,7 @@ import (
 
 func ParseSWEDUArticle(url string) (string, []CAUAttachment, error) {
 	// Fetch article
-	resp, err := http.Get(url)
-	if err != nil {
-		return "", nil, err
-	}
-
-	// Parse html
-	html, err := goquery.NewDocumentFromResponse(resp)
+	html, err := getHtmlFromUrl(url)
 	if err != nil {
 		return "", nil, err
 	}
@@ -55,13 +48,7 @@ func ParseSWEDUArticle(url string) (string, []CAUAttachment, error) {
 func ParseSWEDU() ([]CAUArticle, error) {
 	// Fetch board
 	const boardUrl = "https://swedu.cau.ac.kr/board/list?boardtypeid=7&menuid=001005005"
-	resp, err := http.Get(boardUrl)
-	if err != nil {
-		return nil, err
-	}
-
-	// Parse html
-	html, err := goquery.NewDocumentFromResponse(resp)
+	html, err := getHtmlFromUrl(boardUrl)
 	if err != nil {
 		return nil, err
 	}

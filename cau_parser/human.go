@@ -1,7 +1,6 @@
 package cau_parser
 
 import (
-	"net/http"
 	"regexp"
 	"strings"
 	"time"
@@ -10,13 +9,7 @@ import (
 )
 
 func getHumanArticle(url string) (string, []CAUAttachment, error) {
-	resp, err := http.Get(url)
-	if err != nil {
-		return "", nil, err
-	}
-
-	// Parse html
-	html, err := goquery.NewDocumentFromResponse(resp)
+	html, err := getHtmlFromUrl(url)
 	if err != nil {
 		return "", nil, err
 	}
@@ -46,13 +39,7 @@ func getHumanArticle(url string) (string, []CAUAttachment, error) {
 func ParseHuman() ([]CAUArticle, error) {
 	// Fetch board
 	boardUrl := "https://human.cau.ac.kr/community/notice/List.asp"
-	resp, err := http.Get(boardUrl)
-	if err != nil {
-		return nil, err
-	}
-
-	// Parse html
-	html, err := goquery.NewDocumentFromResponse(resp)
+	html, err := getHtmlFromUrl(boardUrl)
 	if err != nil {
 		return nil, err
 	}

@@ -1,7 +1,6 @@
 package cau_parser
 
 import (
-	"net/http"
 	"regexp"
 	"strings"
 	"time"
@@ -11,14 +10,7 @@ import (
 
 func getCSEArticle(url string) (string, []CAUAttachment, error) {
 	// Fetch HTTP response from cse board
-	resp, err := http.Get(url)
-	if err != nil {
-		return "", nil, err
-	}
-	defer resp.Body.Close()
-
-	// Parse html
-	html, err := goquery.NewDocumentFromResponse(resp)
+	html, err := getHtmlFromUrl(url)
 	if err != nil {
 		return "", nil, err
 	}
@@ -65,14 +57,7 @@ func getCSEArticle(url string) (string, []CAUAttachment, error) {
 func ParseCSE() ([]CAUArticle, error) {
 	// Fetch cse board
 	boardUrl := "http://cse.cau.ac.kr/sub05/sub0501.php"
-	resp, err := http.Get(boardUrl)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	// Parse html
-	html, err := goquery.NewDocumentFromResponse(resp)
+	html, err := getHtmlFromUrl(boardUrl)
 	if err != nil {
 		return nil, err
 	}
