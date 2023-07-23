@@ -43,7 +43,28 @@ func saveArticlesCahe(key string, articles []cau_parser.CAUArticle) error {
 	return nil
 }
 
+func getAllSeoulDormitoryArticles() ([]cau_parser.CAUArticle, error) {
+	articles := []cau_parser.CAUArticle{}
+	var articlesErr error
+	for _, i := range []string{"bluemir", "future_house", "global_house"} {
+		articlesNow, articlesErrNow := getArticlesWithCache("dormitory/seoul/" + i)
+		if articlesErrNow != nil {
+			articlesErr = articlesErrNow
+		}
+		articles = append(articles, articlesNow...)
+	}
+
+	if articlesErr != nil {
+		return nil, articlesErr
+	} else {
+		return articles, nil
+	}
+}
+
 func getArticlesWithCache(key string) ([]cau_parser.CAUArticle, error) {
+	if key == "dormitory/seoul/all" {
+		return getAllSeoulDormitoryArticles()
+	}
 	var articles []cau_parser.CAUArticle
 	var articlesErr error
 

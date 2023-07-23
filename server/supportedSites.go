@@ -1,6 +1,7 @@
 package server
 
 type CauWebsite struct {
+	LongName string
 	Hidden   bool
 	Name     string
 	Url      string
@@ -45,19 +46,22 @@ func GetSupportedSites() []CauWebsite {
 			Name: "서울캠퍼스 기숙사",
 			Children: []CauWebsite{
 				{
-					Key:  "dormitory/seoul/bluemir",
-					Name: "블루미르홀",
-					Url:  "https://dormitory.cau.ac.kr",
+					LongName: "서울캠퍼스 기숙사 블루미르홀",
+					Key:      "dormitory/seoul/bluemir",
+					Name:     "블루미르홀",
+					Url:      "https://dormitory.cau.ac.kr",
 				},
 				{
-					Key:  "dormitory/seoul/future_house",
-					Name: "퓨처하우스",
-					Url:  "https://dormitory.cau.ac.kr",
+					LongName: "서울캠퍼스 기숙사 퓨처하우스",
+					Key:      "dormitory/seoul/future_house",
+					Name:     "퓨처하우스",
+					Url:      "https://dormitory.cau.ac.kr",
 				},
 				{
-					Key:  "dormitory/seoul/global_house",
-					Name: "글로벌하우스",
-					Url:  "https://dormitory.cau.ac.kr",
+					LongName: "서울캠퍼스 기숙사 글로벌하우스",
+					Key:      "dormitory/seoul/global_house",
+					Name:     "글로벌하우스",
+					Url:      "https://dormitory.cau.ac.kr",
 				},
 				{
 					Hidden: true,
