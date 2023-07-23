@@ -8,11 +8,11 @@ import (
 	"litehell.info/cau-rss/server"
 )
 
-func testRedisFor(url string, t *testing.T) {
+func testRedisFor(url string, t *testing.T, websiteUrl string) {
 	baseUrl := "http://127.0.0.1:8080" + url
 
 	t.Logf("Fetching rss first for feed: %s", url)
-	err := testFeed(baseUrl+"/rss", "rss")
+	err := testFeed(baseUrl+"/rss", "rss", websiteUrl)
 	if err != nil {
 		t.Error(err)
 	}
@@ -20,7 +20,7 @@ func testRedisFor(url string, t *testing.T) {
 	for _, i := range []string{"rss", "atom", "json"} {
 		t.Logf("Testing redis feed: %s", url)
 		timeBeforeTest := time.Now()
-		err := testFeed(baseUrl+"/"+i, i)
+		err := testFeed(baseUrl+"/"+i, i, websiteUrl)
 		elapsedTime := time.Now().Sub(timeBeforeTest) / time.Millisecond
 		if err != nil {
 			t.Error(err)
@@ -42,9 +42,10 @@ func TestRedis(t *testing.T) {
 
 	server.LoopForAllSites(func(cw *server.CauWebsite) {
 		key := cw.Key
+		websiteUrl := cw.Url
 		t.Run(key, func(t *testing.T) {
 			t.Parallel()
-			testRedisFor("/cau/"+key, t)
+			testRedisFor("/cau/"+key, t, websiteUrl)
 		})
 	})
 }

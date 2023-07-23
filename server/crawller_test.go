@@ -8,13 +8,13 @@ import (
 	"litehell.info/cau-rss/server"
 )
 
-func testCrawllerFor(url string, t *testing.T) {
+func testCrawllerFor(url string, t *testing.T, websiteUrl string) {
 	baseUrl := "http://127.0.0.1:8080" + url
 
 	for _, i := range []string{"rss", "atom", "json"} {
 		t.Logf("Testing redis feed: %s", url)
 		timeBeforeTest := time.Now()
-		err := testFeed(baseUrl+"/"+i, i)
+		err := testFeed(baseUrl+"/"+i, i, websiteUrl)
 		elapsedTime := time.Now().Sub(timeBeforeTest) / time.Millisecond
 		if err != nil {
 			t.Error(err)
@@ -37,6 +37,6 @@ func TestCrawller(t *testing.T) {
 
 	time.Sleep(5)
 	server.LoopForAllSites(func(cw *server.CauWebsite) {
-		testCrawllerFor("/cau/"+cw.Key, t)
+		testCrawllerFor("/cau/"+cw.Key, t, cw.Url)
 	})
 }

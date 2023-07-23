@@ -11,7 +11,7 @@ import (
 	"litehell.info/cau-rss/server"
 )
 
-func testFeed(url string, feedType string) error {
+func testFeed(url string, feedType string, websiteUrl string) error {
 	resp, err := http.Get(url)
 	if err != nil {
 		return err
@@ -27,6 +27,8 @@ func testFeed(url string, feedType string) error {
 
 		if len(feed.Items) == 0 {
 			return fmt.Errorf("Empty feed")
+		} else if websiteUrl != feed.Link {
+			return fmt.Errorf("Error wrong url (expected: %s real: %s)", websiteUrl, feed.Link)
 		}
 
 	case "atom":
@@ -38,6 +40,8 @@ func testFeed(url string, feedType string) error {
 
 		if len(feed.Entries) == 0 {
 			return fmt.Errorf("Empty feed")
+		} else if websiteUrl != feed.Links[0].Href {
+			return fmt.Errorf("Error wrong url (expected: %s real: %s)", websiteUrl, feed.Links[0].Href)
 		}
 
 	case "json":
@@ -49,6 +53,8 @@ func testFeed(url string, feedType string) error {
 
 		if len(feed.Items) == 0 {
 			return fmt.Errorf("Empty feed")
+		} else if websiteUrl != feed.HomePageURL {
+			return fmt.Errorf("Error wrong url (expected: %s real: %s)", websiteUrl, feed.HomePageURL)
 		}
 	}
 
@@ -62,13 +68,14 @@ func TestFeeds(t *testing.T) {
 		server.LoopForAllSites(func(cw *server.CauWebsite) {
 			endpoint := cw.Key + "/" + feedType
 			feedType := feedType
+			websiteUrl := cw.Url
 			t.Run(endpoint, func(t *testing.T) {
 				url := "http://127.0.0.1:8080/cau/" + endpoint
 
 				t.Logf("Testing feed: %s", url)
 
 				t.Parallel()
-				err := testFeed(url, feedType)
+				err := testFeed(url, feedType, websiteUrl)
 				if err != nil {
 					t.Error(err)
 				}
