@@ -12,8 +12,7 @@ type CauWebsite struct {
 func GetSupportedSites() []CauWebsite {
 	return []CauWebsite{
 		{
-			Name: "소프트웨어대학/SW교육 관련",
-			Url:  "https://sw.cau.ac.kr",
+			Name: "소프트웨어대학",
 			Children: []CauWebsite{
 				{
 					Key:  "cse",
@@ -25,22 +24,17 @@ func GetSupportedSites() []CauWebsite {
 					Name: "AI학과",
 					Url:  "https://ai.cau.ac.kr",
 				},
-				{
-					Key:  "swedu",
-					Name: "다빈치SW교육원",
-					Url:  "https://swedu.cau.ac.kr",
-				},
 			},
 		},
 		{
-			Name: "공학인증 관련",
-			Children: []CauWebsite{
-				{
-					Key:  "abeek",
-					Name: "공학교육혁신센터",
-					Url:  "https://abeek.cau.ac.kr",
-				},
-			},
+			Key:  "swedu",
+			Name: "다빈치SW교육원",
+			Url:  "https://swedu.cau.ac.kr",
+		},
+		{
+			Key:  "abeek",
+			Name: "공학교육혁신센터",
+			Url:  "https://abeek.cau.ac.kr",
 		},
 		{
 			Name: "서울캠퍼스 기숙사",
@@ -73,9 +67,12 @@ func GetSupportedSites() []CauWebsite {
 		},
 		{
 			Name: "창의ICT공과대학",
-			Key:  "ict",
-			Url:  "https://ict.cau.ac.kr",
 			Children: []CauWebsite{
+				{
+					Name: "창의ICT공과대학",
+					Key:  "ict",
+					Url:  "https://ict.cau.ac.kr",
+				},
 				{
 					Name: "전기전자공학부",
 					Key:  "e3home",
