@@ -97,4 +97,13 @@ func TestParsers(t *testing.T) {
 		testArticles(articles, t)
 	})
 
+	t.Run("ict", func(t *testing.T) {
+		t.Parallel()
+		articles, err := cau_parser.ParseICT()
+
+		if err != nil {
+			t.Error(err)
+		}
+		testArticles(articles, t)
+	})
 }
