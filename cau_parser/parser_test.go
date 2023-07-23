@@ -116,4 +116,13 @@ func TestParsers(t *testing.T) {
 		}
 		testArticles(articles, t)
 	})
+	t.Run("ie", func(t *testing.T) {
+		t.Parallel()
+		articles, err := cau_parser.ParseIE()
+
+		if err != nil {
+			t.Error(err)
+		}
+		testArticles(articles, t)
+	})
 }
