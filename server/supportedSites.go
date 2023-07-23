@@ -72,6 +72,23 @@ func GetSupportedSites() []CauWebsite {
 			},
 		},
 		{
+			Name: "창의ICT공과대학",
+			Key:  "ict",
+			Url:  "https://ict.cau.ac.kr",
+			Children: []CauWebsite{
+				{
+					Name: "전기전자공학부",
+					Key:  "e3home",
+					Url:  "https://e3home.cau.ac.kr",
+				},
+				{
+					Name: "융합공학부",
+					Key:  "ie",
+					Url:  "https://ie.cau.ac.kr",
+				},
+			},
+		},
+		{
 			Name: "다빈치캠퍼스 기숙사",
 			Url:  "https://dorm.cau.ac.kr",
 			Key:  "dormitory/davinci",

@@ -25,6 +25,12 @@ func fetchArticlesForKey(key string) ([]cau_parser.CAUArticle, error) {
 		return cau_parser.ParseDormitory(cau_parser.DORMITORY_FUTURE_HOUSE)
 	case "dormitory/seoul/global_house":
 		return cau_parser.ParseDormitory(cau_parser.DORMITORY_GLOBAL_HOUSE)
+	case "ie":
+		return cau_parser.ParseIE()
+	case "e3home":
+		return cau_parser.ParseE3Home()
+	case "ict":
+		return cau_parser.ParseICT()
 	case "ai":
 		return cau_parser.ParseAI()
 	default:
