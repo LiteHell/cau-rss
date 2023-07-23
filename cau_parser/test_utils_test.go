@@ -1,6 +1,7 @@
 package cau_parser_test
 
 import (
+	"os"
 	"strings"
 	"testing"
 
@@ -42,6 +43,8 @@ func testArticles(articles []cau_parser.CAUArticle, t *testing.T) {
 				t.Logf("File (Name: %s, Url: %s)", file.Name, file.Url)
 			}
 		}
-		//t.Logf("Content:\n\t%s", article.Content)
+		if os.Getenv("DEBUG_DISPLAY_CONTENT") == "yes" || os.Getenv("DEBUG_DISPLAY_CONTENT") == "true" {
+			t.Logf("Content:\n\t%s", article.Content)
+		}
 	}
 }
