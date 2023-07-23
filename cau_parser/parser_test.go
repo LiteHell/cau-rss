@@ -106,4 +106,14 @@ func TestParsers(t *testing.T) {
 		}
 		testArticles(articles, t)
 	})
+
+	t.Run("e3home", func(t *testing.T) {
+		t.Parallel()
+		articles, err := cau_parser.ParseE3Home()
+
+		if err != nil {
+			t.Error(err)
+		}
+		testArticles(articles, t)
+	})
 }
