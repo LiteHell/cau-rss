@@ -29,7 +29,8 @@ func CreateServer() *gin.Engine {
 			ctx.Redirect(308, to+ctx.Param("feedType"))
 		})
 	}
-	LoopForAllSites(func(cw *CauWebsite) {
+	LoopForAllSites(func(cwp *CauWebsite) {
+		cw := *cwp
 		server.GET("/cau/"+cw.Key+"/:feedType", func(ctx *gin.Context) {
 			setRedisFeedCacheKey(ctx, ctx.Request.URL.Path)
 		}, serveCachedFeed, func(ctx *gin.Context) {
