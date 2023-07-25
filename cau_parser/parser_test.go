@@ -125,4 +125,13 @@ func TestParsers(t *testing.T) {
 		}
 		testArticles(articles, t)
 	})
+	t.Run("coe", func(t *testing.T) {
+		t.Parallel()
+		articles, err := cau_parser.ParseCOE()
+
+		if err != nil {
+			t.Error(err)
+		}
+		testArticles(articles, t)
+	})
 }
