@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"html"
 	"time"
 
 	"github.com/gorilla/feeds"
@@ -26,12 +27,19 @@ func generateFeed(feed *feeds.Feed, articles []cau_parser.CAUArticle, feedType f
 	updated := time.Unix(0, 0)
 
 	for _, article := range articles {
+		var files string = ""
+		for _, file := range article.Files {
+			files += fmt.Sprintf("<li><a href=\"%s\">%s</a></li>", html.EscapeString(file.Url), html.EscapeString(file.Name))
+		}
+		if files != "" {
+			files = fmt.Sprintf("<div style=\"boder: 1px solid black; padding: 10px;\"><p>첨부파일</p><ul>%s</ul></div>", files)
+		}
 		feed.Add(&feeds.Item{
 			Title:       article.Title,
 			Link:        &feeds.Link{Href: article.Url},
 			Author:      &feeds.Author{Name: article.Author},
 			Created:     article.Date,
-			Content:     article.Content,
+			Content:     article.Content + files,
 			Description: article.Content,
 			Id:          article.Url,
 		})
