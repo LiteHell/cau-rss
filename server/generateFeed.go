@@ -17,9 +17,9 @@ const JSON = 2
 
 func generateFeed(feed *feeds.Feed, articles []cau_parser.CAUArticle, feedType feedType) (string, error) {
 	feed.Image = &feeds.Image{
-		Url:    "https://rss.litehell.info/img/puang.png",
+		Url:    "https://rss.puang.network/img/puang.png",
 		Title:  "RSS 마크를 껴안은 푸앙이",
-		Link:   "https://rss.litehell.info",
+		Link:   "https://rss.puang.network",
 		Width:  400,
 		Height: 400,
 	}
