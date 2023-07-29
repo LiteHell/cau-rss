@@ -2,7 +2,9 @@ package server
 
 import (
 	"fmt"
+	"net/url"
 	"os"
+	"text/template"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/feeds"
@@ -10,6 +12,12 @@ import (
 
 func CreateServer() *gin.Engine {
 	server := gin.Default()
+	webAddress := getWebAddress()
+	server.SetFuncMap(template.FuncMap{
+		"encodeURI": func(uri string) string {
+			return url.QueryEscape(uri)
+		},
+	})
 	server.LoadHTMLGlob("html/*.html")
 
 	server.GET("/index.html", func(ctx *gin.Context) {
@@ -17,7 +25,8 @@ func CreateServer() *gin.Engine {
 	})
 	server.GET("/", func(ctx *gin.Context) {
 		ctx.HTML(200, "index.html", gin.H{
-			"table": getFeedHtmlTable(),
+			"webAddress": webAddress,
+			"table":      getFeedHtmlTable(),
 		})
 	})
 	server.GET("/cau/notice", func(ctx *gin.Context) {
