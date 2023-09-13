@@ -15,39 +15,27 @@ func parseABEEKArticle(url string) (string, string, []CAUAttachment, error) {
 	}
 
 	// Get content
-	content, contentErr := html.Find("#contents table tr.view_text table td").Html()
+	content, contentErr := html.Find("table.tb1 tbody tr:first-child td#bo-cont").Html()
 	if contentErr != nil {
 		return "", "", nil, contentErr
 	}
 
 	// Get nodes for author and files
-	viewListCells := html.Find("#contents table tr.view_list")
-	files := make([]CAUAttachment, viewListCells.Size()-1)
-	var author string
+	fileLinks := html.Find("td.file a")
+	files := make([]CAUAttachment, fileLinks.Size())
 	var cellErr error
 
-	// Process author and files
-	viewListCells.Each(func(i int, s *goquery.Selection) {
-		if i == 0 {
-			// Parse author
-			author = strings.TrimSpace(getTextFromNode(s.Find("td").Get(0)))
+	// Process files
+	fileLinks.Each(func(i int, s *goquery.Selection) {
+		resolve, resolveErr := getAbsoluteUrlFromRelative(s.AttrOr("href", ""), url)
+
+		if resolveErr != nil {
+			cellErr = resolveErr
 		} else {
-			i--
-			// Check whether it's attahcment
-			if strings.TrimSpace(s.Find("th").Text()) != "첨부파일" {
-				return
+			files[i] = CAUAttachment{
+				Name: strings.TrimSpace(s.Text()),
+				Url:  resolve.String(),
 			}
-
-			// Process attachment
-			fileLink := s.Find("td a")
-			url, urlErr := getAbsoluteUrlFromRelative(fileLink.AttrOr("href", ""), url)
-			if urlErr != nil {
-				cellErr = err
-				return
-			}
-
-			files[i].Name = strings.TrimSpace(fileLink.Text())
-			files[i].Url = url.String()
 		}
 	})
 
@@ -55,27 +43,19 @@ func parseABEEKArticle(url string) (string, string, []CAUAttachment, error) {
 		return "", "", nil, cellErr
 	}
 
-	// Process empty files
-	var nonEmptyFiles []CAUAttachment = []CAUAttachment{}
-	for _, file := range files {
-		if file.Name != "" && file.Url != "" {
-			nonEmptyFiles = append(nonEmptyFiles, file)
-		}
-	}
-
-	return content, author, nonEmptyFiles, nil
+	return content, "ABEEK", files, nil
 }
 
 func ParseABEEK() ([]CAUArticle, error) {
 	// Fetch board
-	boardUrl := "https://abeek.cau.ac.kr/notice/list.jsp?sc_board_seq=1&page=1"
+	boardUrl := "https://abeek.cau.ac.kr/em/notice.jsp"
 	html, err := getHtmlFromUrl(boardUrl)
 	if err != nil {
 		return nil, err
 	}
 
 	// Get article rows
-	rows := html.Find("#contents table tbody tr")
+	rows := html.Find("table.tb2 tbody tr")
 	articles := make([]CAUArticle, rows.Size())
 
 	// Variable to handle error in processing rows
@@ -90,9 +70,9 @@ func ParseABEEK() ([]CAUArticle, error) {
 			return
 		}
 
-		articles[i].Url = fmt.Sprintf("https://abeek.cau.ac.kr/notice/view.jsp?sc_board_seq=1&pk_seq=%s",
-			s.Find("td.left a").AttrOr("seq", ""))
-		articles[i].Title = strings.TrimSpace(s.Find("td.left a").Text())
+		articles[i].Url = fmt.Sprintf("https://abeek.cau.ac.kr/em/view.jsp?sc_board_seq=1&pk_seq=%s",
+			s.Find("a.btnView[seq]").AttrOr("seq", ""))
+		articles[i].Title = strings.TrimSpace(s.Find("a.btnView[seq]").Text())
 		articles[i].Date = date.Add(time.Hour * 9) // KST
 
 		content, author, files, articleParseErr := parseABEEKArticle(articles[i].Url)
