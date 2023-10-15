@@ -22,10 +22,7 @@ jobs:
           redis-version: latest
 
       - name: Build
-        run: go build -v ./...
-
-      - name: Test
-        run: go test -v ./...
+        run: docker build --add-host host.docker.internal:host-gateway --target test .
         env:
           REDIS_ENABLED: 'true'
-          REDIS_ADDR: 127.0.0.1:6379
+          REDIS_ADDR: host.docker.internal:6379
