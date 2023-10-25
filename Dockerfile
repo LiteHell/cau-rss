@@ -1,4 +1,4 @@
-FROM golang:1.21rc3-alpine3.18 as base
+FROM golang:alpine as base
 WORKDIR /app
 
 COPY go.mod go.sum ./
@@ -19,9 +19,15 @@ COPY *.go ./
 FROM base as build
 RUN go build -v -o ./app ./
 
-FROM build as test
-# To check whether build is done without error, testing is performed after build stage
-RUN ["go", "test" ,"-v", "./..."]
-
 FROM build as deployment
 CMD ["/app/app"]
+
+FROM base as test
+ARG REDIS_ENABLED
+ARG REDIS_ADDR
+ENV REDIS_ENABLED=${REDIS_ENABLED:-false}
+ENV REDIS_ADDR=${REDIS_ADDR:-127.0.0.1\:6379}
+RUN echo REDIS_ENABLED: $REDIS_ENABLED
+RUN echo REDIS_ADDR: $REDIS_ADDR
+RUN ["go", "test" ,"-v", "./..."]
+
