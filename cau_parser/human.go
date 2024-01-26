@@ -81,7 +81,7 @@ func ParseHuman() ([]CAUArticle, error) {
 
 		articles[i].Author = strings.TrimSpace(getTextFromNode(cells.Get(2)))
 		articles[i].Date = date
-		articles[i].Title = titleLink.Text()
+		articles[i].Title = strings.TrimSpace(titleLink.Text())
 		articles[i].Url = url.String()
 
 		content, files, contentErr := getHumanArticle(url.String())
