@@ -29,15 +29,17 @@ func generateIndex(dir string) {
 	if err != nil {
 		panic(err)
 	}
-	defer func() {
-		indexOutputFile.Close()
-	}()
 
 	writer := bufio.NewWriter(indexOutputFile)
 	indexTemplate.ExecuteTemplate(writer, "index.html", map[string]any{
 		"table":      server.GetFeedHtmlTable(),
 		"webAddress": "rss.puang.network",
 	})
+
+	defer func() {
+		writer.Flush()
+		indexOutputFile.Close()
+	}()
 }
 
 func generateFeedFiles(dir string, items *FeedDataResponse) {
