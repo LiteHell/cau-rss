@@ -1,14 +1,19 @@
 package cau_parser
 
 import (
+	"crypto/tls"
 	"net/http"
 
 	"github.com/PuerkitoBio/goquery"
 )
 
 func getHtmlFromUrl(url string) (*goquery.Document, error) {
-	// Fetch
-	resp, err := http.Get(url)
+	// Fetch, ignoring certificate error
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+	resp, err := client.Get(url)
 	if err != nil {
 		return nil, err
 	}

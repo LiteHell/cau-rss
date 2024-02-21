@@ -1,18 +1,15 @@
 # 중앙대학교 공지사항 RSS 서비스
 개인적으로 쓰기 위해 만든 중앙대학교 공지사항 RSS 서비스입니다. 원래는 웹툰 RSS 기능도 있었지만 삭제했습니다. [golang](https://go.dev) 씁니다.
 
+AWS Lambda 함수로 작동합니다. 빌드된 zip 파일로 AWS 람다 함수를 생성하세요.
+
 ## 빌드 / 테스트 방법
- - 빌드 : `go build`
- - 테스트 : `go test ./...` (참고: redis 기능 테스트하려면 redis 관련 환경변수 전달해줘야 함.)
+1. 버킷을 만들고 권한도 알아서 설정합니다.
+1. 소스 코드 내에서 버킷 이름을 알아서 바꿉니다.
+1. `./build-lambda-zip.sh`
+1. 빌드된 zip 파일을 이용해서 람다를 생성하고 권한 잘 생성하면 끝!
 
-## Redis 관련 환경변수
- - `REDIS_ENABLED`: redis를 이용하려면 `true`로 설정
- - `REDIS_ADDR`: redis 서버 주소 e.g. `127.0.0.1:6379`
- - `REDIS_DB` 이용할 redis DB 번호, 미지정시 0으로 지정됨.
-
-## 서버 관련 환경변수
- - `PORT`: 서버포트
- - `GIN_MODE`: 프로덕션에서 돌리려면 `release`로 설정
+## 환경변수
  - `WEB_ADDRESS`: 웹사이트 주소 (예시: `https://rss.example.com`)
 
 ## 이미지 리소스 라이선스

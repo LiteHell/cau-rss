@@ -15,7 +15,7 @@ const RSS = 0
 const ATOM = 1
 const JSON = 2
 
-func generateFeed(feed *feeds.Feed, articles []cau_parser.CAUArticle, feedType feedType) (string, error) {
+func GenerateFeed(feed *feeds.Feed, articles []cau_parser.CAUArticle, feedType feedType) (string, error) {
 	feed.Image = &feeds.Image{
 		Url:    getWebAddress() + "/img/puang.png",
 		Title:  "RSS 마크를 껴안은 푸앙이",

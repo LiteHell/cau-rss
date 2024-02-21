@@ -87,7 +87,7 @@ func processSiteForFeedHtmlTable(site *CauWebsite, rows *[]HTMLRow) {
 	*rows = append(*rows, childRows...)
 }
 
-func getFeedHtmlTable() []HTMLRow {
+func GetFeedHtmlTable() []HTMLRow {
 	rows := []HTMLRow{}
 	sites := GetSupportedSites()
 
